@@ -2,6 +2,17 @@ pipeline {
     agent any
    
     stages {
+        stage('Configure Docker remote context') {
+            steps {
+                echo 'Configuring Docker remote context...'
+                sh '''
+                  docker context inspect remoto >/dev/null 2>&1 || \
+                  docker context create remoto --docker "host=ssh://pi@192.168.2.4"
+                  docker context use remoto
+                  docker context ls
+                '''
+            }
+        }
         stage('Create web directory')
         {
             input {
@@ -15,6 +26,10 @@ pipeline {
                 echo "The responsible of this project is ${AUTHOR} and and will be deployed in ${ENVIRONMENT}"
                 //Who is executing this process
                 sh 'whoami'
+                //Check pwd folder
+                sh 'pwd'
+                //Check Workspace
+                echo "Workspace path: ${env.WORKSPACE}"
                 //Fisrt, drop the directory if exists
                 sh 'rm -rf /home/jenkins/web'
                 //Create the directory
