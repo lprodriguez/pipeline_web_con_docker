@@ -13,6 +13,8 @@ pipeline {
             }
             steps{
                 echo "The responsible of this project is ${AUTHOR} and and will be deployed in ${ENVIRONMENT}"
+                //Who is executing this process
+                whoami
                 //Fisrt, drop the directory if exists
                 sh 'rm -rf /home/jenkins/web'
                 //Create the directory
