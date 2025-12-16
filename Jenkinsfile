@@ -48,7 +48,12 @@ pipeline {
                     -v $WORKSPACE/web:/usr/local/apache2/htdocs/ \
                     httpd
                 '''
-    }
-}    
+                }
+        }
+        stage('Copy web files into container') {
+            steps {
+                sh 'docker cp $WORKSPACE/web/. apache1:/usr/local/apache2/htdocs/'
+            }
+        }
     }
 }
