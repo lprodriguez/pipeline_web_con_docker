@@ -31,9 +31,9 @@ pipeline {
                 //Check Workspace
                 echo "Workspace path: ${env.WORKSPACE}"
                 //Fisrt, drop the directory if exists
-                sh 'rm -rf /home/jenkins/web'
+                sh 'rm -rf ${env.WORKSPACE}/web'
                 //Create the directory
-                sh 'mkdir /home/jenkins/web'
+                sh 'mkdir ${env.WORKSPACE}/web'
                 
             }
         }
@@ -46,7 +46,7 @@ pipeline {
         stage('Create the Apache httpd container') {
             steps {
             echo 'Creating the container...'
-            sh 'docker run -dit --name apache1 -p 9000:80  -v /home/jenkins/web:/usr/local/apache2/htdocs/ httpd'
+            sh 'docker run -dit --name apache1 -p 9000:80  -v ${env.WORKSPACE}/web:/usr/local/apache2/htdocs/ httpd'
             }
         }
         stage('Copy the web application to the container directory') {
