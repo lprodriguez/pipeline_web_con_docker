@@ -44,7 +44,7 @@ pipeline {
                 sh '''
                   docker run -dit \
                     --name apache1 \
-                    -p 9000:80 \
+                    -p 9001:80 \
                     -v $WORKSPACE/web:/usr/local/apache2/htdocs/ \
                     httpd
                 '''
