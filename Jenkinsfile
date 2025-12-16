@@ -40,9 +40,15 @@ pipeline {
         }
         stage('Create the Apache httpd container') {
             steps {
-            echo 'Creating the container...'
-            sh 'docker run -dit --name apache1 -p 9000:80  -v ${env.WORKSPACE}/web:/usr/local/apache2/htdocs/ httpd'
-            }
-        }     
+                echo 'Creating the container...'
+                sh '''
+                  docker run -dit \
+                    --name apache1 \
+                    -p 9000:80 \
+                    -v $WORKSPACE/web:/usr/local/apache2/htdocs/ \
+                    httpd
+                '''
+    }
+}    
     }
 }
