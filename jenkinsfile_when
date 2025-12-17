@@ -1,6 +1,9 @@
 pipeline {
     agent any
-   
+
+    environment {
+      WEBSERVER = "Apache"
+    }
     stages {
         stage('Mostrar Información del Entorno') {
             steps {
@@ -59,23 +62,57 @@ pipeline {
             steps {
             echo 'droping the container...'
             sh 'docker rm -f apache1'
+            sh 'docker rm -f nginx'
             }
         }
         stage('Create the Apache httpd container') {
+            when {
+              environment name: 'WEBSERVER', value: 'Apache'
+              beforeAgent true
+            }
             steps {
                 echo 'Creating the container...'
                 sh '''
                   docker run -dit \
-                    --name apache1 \
+                    --name apache \
                     -p 9001:80 \
                     -v $WORKSPACE/web:/usr/local/apache2/htdocs/ \
                     httpd
                 '''
                 }
         }
-        stage('Copy web files into container') {
+        stage('Create the Apache Nginx container') {
+            when {
+              environment name: 'WEBSERVER', value: 'Nginx'
+              beforeAgent true
+            }
+            steps {
+                echo 'Creating the container...'
+                sh '''
+                  docker run -dit \
+                    --name nginx \
+                    -p 9001:80 \
+                    -v $WORKSPACE/web:/usr/share/nginx/html/ \
+                    nginx
+                '''
+                }
+        }
+        stage('Copy web files into container Apache') {
+            when {
+              environment name: 'WEBSERVER', value: 'Apache'
+              beforeAgent true
+            }
             steps {
                 sh 'docker cp $WORKSPACE/web/. apache1:/usr/local/apache2/htdocs/'
+            }
+        }
+        stage('Copy web files into container Apache') {
+            when {
+              environment name: 'WEBSERVER', value: 'Nginx'
+              beforeAgent true
+            }
+            steps {
+                sh 'docker cp $WORKSPACE/web/. nginx:/usr/share/nginx/html/'
             }
         }
         post {
