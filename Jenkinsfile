@@ -78,5 +78,19 @@ pipeline {
                 sh 'docker cp $WORKSPACE/web/. apache1:/usr/local/apache2/htdocs/'
             }
         }
+        post {
+          cleanup {
+            // One or more steps need to be included within each condition's block.
+              echo 'cleanup process'
+          }
+          success {
+            // One or more steps need to be included within each condition's block.
+              echo 'success process'
+          }
+          failure {
+            // One or more steps need to be included within each condition's block.
+              echo 'failure process'
+          }
+        }
     }
 }
