@@ -115,7 +115,8 @@ pipeline {
                 sh 'docker cp $WORKSPACE/web/. nginx:/usr/share/nginx/html/'
             }
         }
-        post {
+    }
+    post {
           cleanup {
             // One or more steps need to be included within each condition's block.
               echo 'cleanup process'
@@ -129,5 +130,4 @@ pipeline {
               echo 'failure process'
           }
         }
-    }
 }
