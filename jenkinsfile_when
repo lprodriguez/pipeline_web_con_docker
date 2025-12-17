@@ -103,7 +103,7 @@ pipeline {
               beforeAgent true
             }
             steps {
-                sh 'docker cp $WORKSPACE/web/. apache1:/usr/local/apache2/htdocs/'
+                sh 'docker cp $WORKSPACE/web/. apache:/usr/local/apache2/htdocs/'
             }
         }
         stage('Copy web files into container Nginx') {
