@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-      WEBSERVER = "Apache"
+      WEBSERVER = "Nginx"
     }
     stages {
         stage('Mostrar Información del Entorno') {
