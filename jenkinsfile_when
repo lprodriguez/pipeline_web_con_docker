@@ -58,7 +58,7 @@ pipeline {
                 echo "The responsible of this project is ${AUTHOR} and and will be deployed in ${ENVIRONMENT}" 
             }
         }
-        stage('Drop the Apache HTTPD Docker container'){
+        stage('Drop the Apache Nginx Docker container'){
             steps {
             echo 'droping the container...'
             sh 'docker rm -f apache1'
@@ -106,7 +106,7 @@ pipeline {
                 sh 'docker cp $WORKSPACE/web/. apache1:/usr/local/apache2/htdocs/'
             }
         }
-        stage('Copy web files into container Apache') {
+        stage('Copy web files into container Nginx') {
             when {
               environment name: 'WEBSERVER', value: 'Nginx'
               beforeAgent true
